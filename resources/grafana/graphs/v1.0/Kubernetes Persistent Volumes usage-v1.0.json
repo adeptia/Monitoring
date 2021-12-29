@@ -18,16 +18,16 @@
       "version": "8.3.3"
     },
     {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
       "type": "datasource",
       "id": "prometheus",
       "name": "Prometheus",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
     }
   ],
   "annotations": {
@@ -55,54 +55,85 @@
   "gnetId": 7685,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1640183666697,
+  "iteration": 1640785979419,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "fill": 1,
-      "fillGradient": 0,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 14,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "hiddenSeries": false,
       "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
       "options": {
-        "alertThreshold": true
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "percentage": false,
       "pluginVersion": "8.3.3",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
           "datasource": {
@@ -110,7 +141,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "(kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=\"$volume\"} - kubelet_volume_stats_available_bytes{persistentvolumeclaim=\"$volume\"}) / kubelet_volume_stats_capacity_bytes{persistentvolumeclaim=\"$volume\"} * 100",
+          "expr": "kubelet_volume_stats_available_bytes{persistentvolumeclaim=\"$volume\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -118,35 +149,8 @@
           "refId": "A"
         }
       ],
-      "thresholds": [],
-      "timeRegions": [],
       "title": "Volume usage",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     }
   ],
   "schemaVersion": 34,
@@ -186,7 +190,7 @@
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(kubelet_volume_stats_capacity_bytes{namespace=~\"$namespace\"}, persistentvolumeclaim)",
+        "definition": "label_values({namespace=~\"$namespace\"},persistentvolumeclaim)",
         "hide": 0,
         "includeAll": false,
         "label": "Volume",
@@ -194,7 +198,7 @@
         "name": "volume",
         "options": [],
         "query": {
-          "query": "label_values(kubelet_volume_stats_capacity_bytes{namespace=~\"$namespace\"}, persistentvolumeclaim)",
+          "query": "label_values({namespace=~\"$namespace\"},persistentvolumeclaim)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -209,7 +213,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {
@@ -240,6 +244,6 @@
   "timezone": "",
   "title": "Kubernetes Persistent Volumes usage",
   "uid": "Y5d5lRhik",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
